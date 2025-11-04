@@ -1,0 +1,76 @@
+---
+title: RL
+description: Reinforcement learning on Harbor tasks
+---
+
+Performing RL on containerized agentic tasks is a common use case but difficult to implement and scale. Harbor provides a simple interface for training on containerized agentic environments.
+
+We plan to integrate with most popular RL frameworks. For now, we have worked with the SkyRL team to implement their interface for RL on Harbor tasks. 
+
+In general, performing RL on Harbor tasks requires generating rollouts and recording tokens and rewards. This usually involves implementing a RL framework's rollout interface.
+
+We recommend using the `TrialConfig` or `JobConfig` classes to generate the rollouts. We also recommend using [cloud sandboxes](/docs/cloud) for scaling rollouts and reducing startup/teardown overhead.
+
+In Harbor, a trial is an agent's attempt at completing a task. A job is a collection of trials.
+
+Here is an example of a trial config:
+
+```json
+{
+    "task": {
+        "path": "cancel-async-tasks",
+        "git_url": "https://github.com/laude-institute/terminal-bench-2.git",
+        "git_commit_id": "69671fbaac6d67a7ef0dfec016cc38a64ef7a77c"
+    },
+    "trials_dir": "jobs/my-trial",
+    "agent": {
+        "name": "terminus-2",
+        "import_path": null,
+        "model_name": "anthropic/claude-sonnet-4-5",
+    },
+    "environment": {
+        "type": "daytona",
+        "force_build": false,
+        "delete": true,
+    }
+}
+```
+
+And here is an example of a job config:
+
+```json
+{
+    "jobs_dir": "jobs",
+    "orchestrator": {
+        "type": "local",
+        "n_concurrent_trials": 32,
+        "retry": {
+            "max_retries": 2,
+            "exclude_exceptions": [
+                "AgentTimeoutError",
+                "VerifierTimeoutError"
+            ]
+        }
+    },
+    "environment": {
+        "type": "daytona",
+        "force_build": false,
+        "delete": true,
+    },
+    "agents": [
+        {
+            "name": "terminus-2",
+            "model_name": "anthropic/claude-haiku-4-5",
+        }
+    ],
+    "datasets": [
+        {
+            "registry": {
+                "url": "https://raw.githubusercontent.com/laude-institute/harbor/main/registry.json"
+            },
+            "name": "terminal-bench",
+            "version": "2.0"
+        }
+    ]
+}
+```

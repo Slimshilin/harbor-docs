@@ -1,0 +1,24 @@
+---
+title: Evals
+description: Running a dataset
+---
+
+Harbor is built by the creators of Terminal-Bench with evals as a core use case.
+
+To evaluate on Terminal-Bench, you can use the following command:
+
+```bash
+harbor run -d terminal-bench@2.0 -m "<model>" -a "<agent>"
+```
+
+To evaluate on SWE-Bench Verified, you can use the following command:
+
+```bash
+harbor run -d swe-bench-verified -m "<model>" -a "<agent>"
+```
+
+Run the following command to list all available datasets:
+
+```bash
+harbor datasets list
+```

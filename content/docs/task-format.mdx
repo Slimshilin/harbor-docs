@@ -1,0 +1,35 @@
+---
+title: Tasks
+description: Creating and running tasks for agentic environments
+---
+
+The Harbor task format is designed to be maximally flexible while still being intuitive to implement.
+
+## Creating a task
+
+To create a task, you can use the following command:
+
+```bash
+harbor tasks create "<task-name>"
+```
+
+This will create a new task directory with the following structure:
+
+import { File, Folder, Files } from 'fumadocs-ui/components/files';
+
+<Files>
+  <File name="instruction.md" />
+  <File name="task.toml" />
+  <Folder name="environment" defaultOpen>
+    <File name="Dockerfile" />
+    <File name="..." />
+  </Folder>
+  <Folder name="solution" defaultOpen>
+    <File name="solve.sh" />
+    <File name="..." />
+  </Folder>
+  <Folder name="tests" defaultOpen>
+    <File name="test.sh" />
+    <File name="..." />
+  </Folder>
+</Files>

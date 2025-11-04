@@ -1,14 +1,41 @@
-import { RootProvider } from 'fumadocs-ui/provider/next';
-import './global.css';
-import { Inter } from 'next/font/google';
+import { cn } from "@/lib/utils";
+import { RootProvider } from "fumadocs-ui/provider/next";
+import { GeistMono } from "geist/font/mono";
+import {
+  Instrument_Sans,
+  Instrument_Serif,
+  Plus_Jakarta_Sans,
+} from "next/font/google";
+import "./global.css";
 
-const inter = Inter({
-  subsets: ['latin'],
+const instrumentSerif = Instrument_Serif({
+  weight: ["400"],
+  subsets: ["latin"],
+  variable: "--font-instrument-serif",
 });
 
-export default function Layout({ children }: LayoutProps<'/'>) {
+const instrumentSans = Instrument_Sans({
+  subsets: ["latin"],
+  variable: "--font-instrument-sans",
+});
+
+const plus = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus",
+});
+
+export default function Layout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={inter.className} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn(
+        plus.variable,
+        instrumentSerif.variable,
+        instrumentSans.variable,
+        GeistMono.variable
+      )}
+      suppressHydrationWarning
+    >
       <body className="flex flex-col min-h-screen">
         <RootProvider>{children}</RootProvider>
       </body>

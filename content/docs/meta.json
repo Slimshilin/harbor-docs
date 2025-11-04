@@ -1,0 +1,24 @@
+{
+    "pages": [
+        "---Harbor---",
+        "index",
+        "migration",
+        "---Agents---",
+        "agents",
+        "---Tasks---",
+        "task-format",
+        "task-tutorial",
+        "task-difference",
+        "---Datasets---",
+        "datasets",
+        "---Cloud---",
+        "cloud",
+        "---Use Cases---",
+        "evals",
+        "rl",
+        "prompt-optimization",
+        "sft",
+        "---Contributing---",
+        "contributing"
+    ]
+}
