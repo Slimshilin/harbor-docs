@@ -1,12 +1,46 @@
 import { cn } from "@/lib/utils";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import { GeistMono } from "geist/font/mono";
+import { Metadata } from "next";
 import {
   Instrument_Sans,
   Instrument_Serif,
   Plus_Jakarta_Sans,
 } from "next/font/google";
 import "./global.css";
+
+export const metadata: Metadata = {
+  title: "Harbor",
+  metadataBase: new URL("https://harborframework.ai"),
+  description:
+    "A framework for evaluating and optimizing sandboxed agents and models.",
+  icons: {
+    icon: "/favicon.ico",
+  },
+  openGraph: {
+    title: "Harbor",
+    description:
+      "A framework for evaluating and optimizing sandboxed agents and models.",
+    images: "/og/ascii-logo-dark-1200x630.png",
+    url: "https://harborframework.ai",
+    siteName: "Harbor",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Harbor",
+    description:
+      "A framework for evaluating and optimizing sandboxed agents and models.",
+    images: [
+      {
+        url: "/og/ascii-logo-dark-1200x630.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+};
 
 const instrumentSerif = Instrument_Serif({
   weight: ["400"],
