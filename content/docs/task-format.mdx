@@ -74,8 +74,8 @@ timeout_sec = 120.0
 build_timeout_sec = 600.0
 docker_image = "some-org/some-name:some-tag"
 cpus = 1
-memory = "2G"
-storage = "10G"
+memory_mb = 2048
+storage_mb = 10240
 ```
 
 The configuration parameters are shown below:
@@ -126,17 +126,17 @@ import { TypeTable } from 'fumadocs-ui/components/type-table';
       default: 1,
       path: "environment.cpus"
     },
-    "environment.memory": {
-      description: "Amount of RAM available to the environment.",
-      type: "string",
-      default: '"2G"',
-      path: "environment.memory"
+    "environment.memory_mb": {
+      description: "Amount of RAM available to the environment in megabytes.",
+      type: "integer",
+      default: 2048,
+      path: "environment.memory_mb"
     },
-    "environment.storage": {
-      description: "Amount of storage available to the environment.",
-      type: "string",
-      default: '"10G"',
-      path: "environment.storage"
+    "environment.storage_mb": {
+      description: "Amount of storage available to the environment in megabytes.",
+      type: "integer",
+      default: 10240,
+      path: "environment.storage_mb"
     },
     "source": {
       description: "Optional source string for task provenance.",

@@ -11,7 +11,7 @@ import "./global.css";
 
 export const metadata: Metadata = {
   title: "Harbor",
-  metadataBase: new URL("https://harborframework.ai"),
+  metadataBase: new URL("https://harborframework.com"),
   description:
     "A framework for evaluating and optimizing sandboxed agents and models.",
   icons: {
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     title: "Harbor",
     description:
       "A framework for evaluating and optimizing sandboxed agents and models.",
-    images: "/og/ascii-logo-dark-1200x630.png",
-    url: "https://harborframework.ai",
+    images: "/harbor-og-dark-1200x630.png",
+    url: "https://harborframework.com",
     siteName: "Harbor",
     locale: "en_US",
     type: "website",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
       "A framework for evaluating and optimizing sandboxed agents and models.",
     images: [
       {
-        url: "/og/ascii-logo-dark-1200x630.png",
+        url: "/harbor-og-dark-1200x630.png",
         width: 1200,
         height: 630,
       },
