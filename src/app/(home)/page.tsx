@@ -10,8 +10,9 @@ export default function HomePage() {
         <p className="text-sm px-3 rounded-lg border py-1 bg-muted">
           From the makers of Terminal-Bench.
         </p>
-        <p className="text-lg text-muted-foreground">
-          A framework for evals and training using agentic environments.
+        <p className="text-lg text-muted-foreground text-center">
+          A framework for evaluating and optimizing agents and models in
+          container environments.
         </p>
         <CodeBlock lang="bash" code={`uv tool install harbor`} />
         <Button size="lg" asChild className="mt-6">
