@@ -18,6 +18,16 @@ export function baseOptions(): BaseLayoutProps {
         text: "Docs",
         active: "nested-url",
       },
+      {
+        url: "https://discord.gg/6xWPKhGDbA",
+        text: "Discord",
+        active: "none",
+        external: true,
+      },
     ],
+    themeSwitch: {
+      enabled: true,
+      mode: "light-dark-system",
+    },
   };
 }
