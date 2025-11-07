@@ -18,6 +18,14 @@ export default function HomePage() {
         <Button size="lg" asChild className="mt-6">
           <Link href="/docs">Read the docs</Link>
         </Button>
+        <div className="w-full aspect-video">
+          <iframe
+            src="https://www.loom.com/embed/8c11f218c9fc4674bd659146af435627"
+            allowFullScreen
+            className="w-full h-full rounded-xl"
+            style={{ border: 0 }}
+          ></iframe>
+        </div>
       </div>
     </main>
   );
