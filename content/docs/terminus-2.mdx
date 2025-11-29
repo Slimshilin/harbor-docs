@@ -75,22 +75,26 @@ agent_config = AgentConfig(
         "enable_summarize": True,  # Enable context summarization (default: True)
         "proactive_summarization_threshold": 8000,  # Free tokens threshold for summarization (default: 8000)
 
-        # RL training configuration
-        "collect_rollout_details": False,  # Collect token IDs and logprobs (default: False)
+        # RL training configuration (default: False)
+        # If enabled, token ids and logprobs are collected in result and persisted in trajectories
+        "collect_rollout_details": False,
 
         # Advanced model configuration
         "reasoning_effort": "medium",  # "none", "minimal", "low", "medium", "high", or "default" (default: None)
         "max_thinking_tokens": 2048,  # For Anthropic extended thinking mode (minimum: 1024, default: None)
 
-        # Custom model registration
+        # Optional: Register custom model info with LiteLLM
+        # LiteLLM doesn't recognize uncommon models like custom models. For metrics
+        # tracking and context summarization to work properly, provide model_info following
+        # https://docs.litellm.ai/docs/completion/token_usage#9-register_model
         "model_info": {
             "max_input_tokens": 128000,
             "max_output_tokens": 4096,
             "input_cost_per_token": 0.000003,
             "output_cost_per_token": 0.000015,
-        },  # Optional: Register custom model info with LiteLLM
+        },  
 
-        # Session tracking
+        # Session tracking (included in the LLM request body unless LLM provider doesn't support)
         "session_id": "custom-session-id",  # Custom session ID (default: auto-generated UUID)
     }
 )
