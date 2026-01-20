@@ -120,6 +120,7 @@ Your adapter code is used to generate task directories. A typical directory stru
     <File name="parity_experiment.json (Parity experiment results)" />
     <File name="run_<adapter-name>.yaml (Reference configuration for running the adapter)" />
     <File name="README.md (Adapter documentation)" />
+    <File name="adapter_metadata.json (Adapter metadata)" />
     <Folder name="template" defaultOpen>
       <File name="task.toml" />
       <File name="instruction.md" />
@@ -308,27 +309,27 @@ To formally store and track the performance parity between the original benchmar
     "agent": <agent-name>@<agent-version>,
     "model": <model-name-with-detailed-version>,
     "date": <date>,
-    "notes": <notes>, // e.g., "n tasks; averaged over 5 trials"
-    "original_parity_repo": <forked-repo-link>, // For reproducing the parity experiments on the original benchmark side; usually this is a fork of the original benchmark repo
-    "adapter_pr": <adapter-pr-link>, // You can add this link after the adapter PR is created
-    "dataset_pr": <dataset-pr-link>, // Registry PR link
-    "parity_pr": <huggingface-parity-experiment-pr-link>, // PR link to the HuggingFace parity experiment dataset (instructions below))
+    "notes": <notes>, // e.g., "n tasks; averaged over 5 trials; if the parity is run on full set or parity set + how many tasks are there for each"
+    "original_parity_repo": <forked-repo-link>, // For reproducing the parity experiments on the original benchmark side; usually this is a fork of the original benchmark repo whose README includes instructions + scripts for running the parity experiments
+    "adapter_pr": [<adapter-pr-link>, ...], // Adapter PR link(s) in the `harbor` repo; show all PR links related to the adapter, including later fixes.
+    "dataset_pr": [<dataset-pr-link>, ...], // All PR link(s) in `harbor-datasets` repo that are registering the adapter.
+    "parity_pr": [<huggingface-parity-experiment-pr-link>, ...], // Al PR link(s) to the HuggingFace parity experiment dataset (instructions below))
     "metrics": [
       {
         "benchmark_name": <original-benchmark-name>,
         "metric": <metric1>,
         "original": <mean +/- std_error>, // Average scores obtained from the original benchmark
         "harbor": <mean +/- std_error>, // Average scores obtained from Harbor adapter
-        "original_trials": [<trial1>, <trial2>, <trial3>, ...],
-        "harbor_trials": [<trial1>, <trial2>, <trial3>, ...],
+        "original_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trail scores
+        "harbor_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trail scores
       }, 
       {
         "benchmark_name": <original-benchmark-name>,
         "metric": <metric2>,
         "original": <mean +/- std_error>, // Average scores obtained from the original benchmark
         "harbor": <mean +/- std_error>, // Average scores obtained from Harbor adapter
-        "original_trials": [<trial1>, <trial2>, <trial3>, ...],
-        "harbor_trials": [<trial1>, <trial2>, <trial3>, ...],
+        "original_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trail scores
+        "harbor_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trail scores
       },  // ... more metrics
     ]
   },
@@ -340,7 +341,7 @@ You should also include the parity experiment results in the `README.md` of your
 ```markdown
 | Agent | Model | Metric | Original Benchmark Performance | Harbor Adapter Performance |
 |-------|-------|--------|--------------------------------|----------------------------|
-| claude-code | claude-4.1-opus | Metric | Score ± Std | Score ± Std |
+| claude-code | claude-4-opus | Metric | Score ± Std | Score ± Std |
 | codex | gpt-5 | Metric | Score ± Std | Score ± Std |
 | ... | ... | ... | ... | ... |
 ```
@@ -401,7 +402,7 @@ For example:
     // existing entries...
     {
         "name": "<your-adapter-name>",
-        "version": "1.0",  // or "parity" if this is a parity subset
+        "version": "1.0",  // or "parity" if this is a parity subset; if there are named splits from the original benchmark, use them accordingly
         "description": "A brief description of the adapter. Original benchmark: [URL]. More details at [adapter README URL].",
         "tasks": [
             {
@@ -451,6 +452,42 @@ Your README must clearly and comprehensively document all adaptation details, in
 - **Known limitations or constraints**
 
 The documentation should be detailed enough for other community users to understand your adaptation choices and reproduce your work.
+
+Next, you need to write a `harbor/adapters/{adapter_name}/adapter_metadata.json` that follows the format below:
+```json
+[
+  {
+    "adapter_name": <adapter-name>,
+    "adapter_builders": [<builder-full-name> (<primary-builder-email-for-contact>), ...]
+    "original_benchmark": [
+      {
+        "split": <original-benchmark-split>, // if there's no split or subset name, use "full".
+        "size": <number-of-tasks-in-the-split>, // "task" may mean different things in different benchmarks; for term consistency, we count tasks in Harbor context.
+        "harness": <harness-type> // choose between "agent", "llm", or `None`, depending on whether the benchmark has scripts for agent / llm inference.
+        "supported_agents": [agent_1, agent_2, ...], // supported agents (including custom agents) in the original harness; if no agents are originally supported, use `None`. Please use agent@version if version is available.
+        "adaptable": <true-or-false>, // if this split can be converted to Harbor tasks with the provided adapter code.
+        "notes": <additional-clarification>, // e.g., term explanation, special task structures or requirements on machine or compute. Fill `None` if not applicable.
+      }, 
+      ... // more splits or subsets if there exist.
+    ],
+    "harbor_adapter": [
+      {
+        "split": <original-benchmark-split>, // if there's no split or subset name, use "full"; if the adapter code works for all splits, we can still just write "full" without needing to split them one by one.
+        "adapted_benchmark_size": <number-of-tasks-convertible-in-the-adapter>, // this may be different than the size of the original benchmark's corresponding split, because we might exclude certain tasks for sufficient reasons documented in the README.
+        "parity_benchmark_size": <number-of-tasks-used-for-parity>, // same as adapted_benchmark_size if we ran parity on full set
+        "parity_sampling_rate": adapted_benchmark_size / parity_benchmark_size
+        "added_agents": [custom_agent1, custom_agent2], // custom agents added by the adapter to align with the original benchmark.
+        "parity_matching_agents": [agent_1@version+model, agent_1@version+model, ...] // agents (including custom ones) used for parity experiment AND achieved comparable scores to original benchmark.
+        "parity_unmatching_agents": [agent_1@version+model, agent_1@version+model, ...] // agents used for parity experiment BUT didn't achieve comparable scores to original benchmark. This may happen for some weak models. Fill `None` if there's no unmatching parity results.
+        "parity_costs": <USD-spent-for-parity-experiments> // total expense used for running parity experiments on the adapter
+        "notes": <additional-clarification>, // e.g., special treatment on the adapter. Fill `None` if not applicable.
+      }, 
+      ... // more splits or subsets if necessary.
+    ],
+  },
+  ... // if the adapter ran parity between Harbor Adapter <--> Terminal Bench Adapter <--> Original Benchmark, then substitute "harbor_adapter" with "tb_adapter" for the above entries and copy paste it below to include corresponding information for "tb_adapter" and "harbor_adapter" comparison.
+]
+```
 
 Once everything is ready for review (all steps completed, documentation finalized, screenshots added), update your Harbor adapter PR:
 
