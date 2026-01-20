@@ -22,8 +22,8 @@ See [this section](#translating-terminal-bench-adapters-to-harbor) to learn abou
 ## Quick Start
 
 ```bash
-# List available adapters
-harbor adapters list
+# List available datasets
+harbor datasets list
 
 # Start the interactive wizard to create a new adapter
 harbor adapters init
@@ -32,7 +32,7 @@ harbor adapters init
 harbor adapters init my-adapter --name "My Benchmark"
 ```
 
-Use the above commands to view our supported adapters and start creating your new ones. The `harbor adapters init` command will create starter code and template files.
+Use the above commands to view our supported datasets and start creating your new ones. The `harbor adapters init` command will create starter code and template files.
 
 For more details about what adapters are and how we ensure equivalance between the original benchmark and its harbor adapter, please continue reading.
 
@@ -151,7 +151,7 @@ More details (expand to view):
     It should support:
     - Temporarily cloning the source benchmark, preparing the tasks, and cleaning up the temporary clone.
     - Generating tasks from an existing, already-cloned benchmark repository without deleting it.
-    
+
     Also, by default, your adapter should create tasks in `datasets/<adapter-name>`, but you should also allow users to specify a custom output path via command-line arguments `--output-path`.
   </Accordion>
 </Accordions>
@@ -392,7 +392,7 @@ Once your adapter correctly generates tasks and you verify the parity experiment
 - **Pull Request:** Create a pull request to the `harbor-datasets` repository. It's recommended to link the original benchmark's GitHub repository in your PR. Request @Slimshilin for review, and he will merge it so you can try `--registry-path` for the `harbor` harness. You may always submit another PR to update the dataset registry.
 
 
-Then you should navigate to the `harbor` repository (not the dataset repo!) and add a new entry to the `registry.json` file in the root. **Note:** Harbor's registry format uses task-level entries with Git URLs. 
+Then you should navigate to the `harbor` repository (not the dataset repo!) and add a new entry to the `registry.json` file in the root. **Note:** Harbor's registry format uses task-level entries with Git URLs.
 
 **Version naming:** Use `"version": "1.0"` by default. If there's a version naming of the original benchmark (e.g., "verified", "lite"), then please follow their naming. If you ran parity experiments on a subset (see [Section 4](#4-discuss-parity-plans-and-implement-agents)), use `"version": "parity"` for the parity subset to allow users to run `-d <adapter_name>@parity` for parity reproduction.
 
@@ -531,7 +531,7 @@ The following table summarizes the main differences between Terminal-Bench and H
 | **CLI Commands** | `tb run --dataset` / `tb run --dataset-path` | `harbor jobs start -d` / `harbor trials start -p` |
 | **Metrics** | Resolved rate (binary pass/fail per task) | Rewards that support multiple metrics and float-type values |
 
-**IMPORTANT:** If the Terminal-Bench adapter used a tweaked metric (e.g., threshold-based scoring, ignoring certain metrics), then you'll need to re-implement the adapter for Harbor to support the **original** metrics used by the benchmark, as Harbor now supports multiple metrics as rewards. 
+**IMPORTANT:** If the Terminal-Bench adapter used a tweaked metric (e.g., threshold-based scoring, ignoring certain metrics), then you'll need to re-implement the adapter for Harbor to support the **original** metrics used by the benchmark, as Harbor now supports multiple metrics as rewards.
 
 ### File Structure Migration
 
