@@ -309,27 +309,30 @@ To formally store and track the performance parity between the original benchmar
     "agent": <agent-name>@<agent-version>,
     "model": <model-name-with-detailed-version>,
     "date": <date>,
-    "notes": <notes>, // e.g., "n tasks; averaged over 5 trials; if the parity is run on full set or parity set + how many tasks are there for each"
+    "adapted_benchmark_size": <number-of-tasks-converted-by-the-adapter> // Full set size
+    "parity_benchmark_size": <number-of-tasks-used-for-parity>, // Same as adapted_benchmark_size if we ran parity on full set
+    "number_of_trials": <number-of-trials-run-for-parity> // Unless special case, this should be identical for original and harbor runs.
+    "notes": <notes>, // additional explanations on special treatments, etc.
     "original_parity_repo": <forked-repo-link>, // For reproducing the parity experiments on the original benchmark side; usually this is a fork of the original benchmark repo whose README includes instructions + scripts for running the parity experiments
     "adapter_pr": [<adapter-pr-link>, ...], // Adapter PR link(s) in the `harbor` repo; show all PR links related to the adapter, including later fixes.
     "dataset_pr": [<dataset-pr-link>, ...], // All PR link(s) in `harbor-datasets` repo that are registering the adapter.
-    "parity_pr": [<huggingface-parity-experiment-pr-link>, ...], // Al PR link(s) to the HuggingFace parity experiment dataset (instructions below))
+    "parity_pr": [<huggingface-parity-experiment-pr-link>, ...], // All PR link(s) to the HuggingFace parity experiment dataset (instructions below))
     "metrics": [
       {
         "benchmark_name": <original-benchmark-name>,
         "metric": <metric1>,
         "original": <mean +/- std_error>, // Average scores obtained from the original benchmark
         "harbor": <mean +/- std_error>, // Average scores obtained from Harbor adapter
-        "original_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trail scores
-        "harbor_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trail scores
+        "original_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trial scores
+        "harbor_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trial scores
       }, 
       {
         "benchmark_name": <original-benchmark-name>,
         "metric": <metric2>,
         "original": <mean +/- std_error>, // Average scores obtained from the original benchmark
         "harbor": <mean +/- std_error>, // Average scores obtained from Harbor adapter
-        "original_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trail scores
-        "harbor_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trail scores
+        "original_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trial scores
+        "harbor_trials": [<trial1>, <trial2>, <trial3>, ...], // Individual trial scores
       },  // ... more metrics
     ]
   },
@@ -339,11 +342,11 @@ To formally store and track the performance parity between the original benchmar
 
 You should also include the parity experiment results in the `README.md` of your adapter. For example, you can add the following table:
 ```markdown
-| Agent | Model | Metric | Original Benchmark Performance | Harbor Adapter Performance |
-|-------|-------|--------|--------------------------------|----------------------------|
-| claude-code | claude-4-opus | Metric | Score ± Std | Score ± Std |
-| codex | gpt-5 | Metric | Score ± Std | Score ± Std |
-| ... | ... | ... | ... | ... |
+| Agent | Model | Metric | Number of Trials | Dataset Size | Original Benchmark Performance | Harbor Adapter Performance |
+|-------|-------|--------|------------------|--------------|--------------------------------|----------------------------|
+| claude-code | claude-4-opus | Metric | 3 | 100 tasks (5% of full set) | Score ± Std | Score ± Std |
+| codex | gpt-5 | Metric | 5 | 2000 tasks (100% of full set) | Score ± Std | Score ± Std |
+| ... | ... | ... | ... | ... | ... | ... |
 ```
 Then include the following links:
 - The link to the original benchmark's GitHub repository
