@@ -192,7 +192,7 @@ export default async function DatasetPage({
       <div>
         <CodeBlock
           lang="bash"
-          code={`harbor run -d ${dataset.name}@${dataset.version}`}
+          code={`uvx harbor run -d ${dataset.name}@${dataset.version}`}
         />
       </div>
 

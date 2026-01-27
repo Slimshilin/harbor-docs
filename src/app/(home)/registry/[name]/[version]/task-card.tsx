@@ -90,7 +90,7 @@ export function TaskCard({
           >
             <CodeBlock
               lang="bash"
-              code={`harbor run -d ${datasetName}@${datasetVersion} -t ${name}`}
+              code={`uvx harbor run -d ${datasetName}@${datasetVersion} -t ${name}`}
             />
           </div>
         </CardContent>

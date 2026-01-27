@@ -157,14 +157,14 @@ There are a few special paths in the environment's filesystem:
 |------------------------|-------------------------------------------------------------------------------------------------------------------|
 | `/logs/verifier/`      | Contains the reward file and other verifier logs.          |
 | `/logs/agent/`         | A directory agents can use to store logs from their runs.                                                              |
-| `/oracle/`             | The solution folder is copied here by the Oracle agent at runtime and executed from the working directory.         |
+| `/solution/`             | The solution folder is copied here by the Oracle agent at runtime and executed from the working directory.         |
 | `/tests/`              | The tests folder is copied here by the Harbor harness at runtime and executed from the working directory.          |
 
 The `/logs/` directory is downloaded to the host after the agent/verifier run and are often useful for debugging and analysis.
 
 ### Solution (Optional)
 
-The solution folder must contain a `solution/solve.sh` script. Other dependencies are allowed. This folder is copied to `/oracle` by the Oracle agent at runtime and executed from the working directory.
+The solution folder must contain a `solution/solve.sh` script. Other dependencies are allowed. This folder is copied to `/solution` by the Oracle agent at runtime and executed from the working directory.
 
 If no solution is provided, the Oracle agent cannot be used to sanity check the task.
 

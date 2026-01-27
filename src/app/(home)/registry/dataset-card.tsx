@@ -71,7 +71,7 @@ export function DatasetCard({
               e.stopPropagation();
             }}
           >
-            <CodeBlock lang="bash" code={`harbor run -d ${name}@${version}`} />
+            <CodeBlock lang="bash" code={`uvx harbor run -d ${name}@${version}`} />
           </div>
           <p className="text-sm text-muted-foreground font-code">
             {taskCount} tasks
